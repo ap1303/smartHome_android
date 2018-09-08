@@ -19,14 +19,19 @@ public class visitserver extends AsyncTask<URL, Void, Integer> {
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
-            urlConnection.setReadTimeout(10000);
-            urlConnection.setConnectTimeout(60000);
+            urlConnection.setReadTimeout(100);
+            urlConnection.setConnectTimeout(3000);
             urlConnection.connect();
-            InputStream is = urlConnection.getInputStream();
-            while(is.available() != 0) {
-                is.read();
+            int responseCode = urlConnection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                //throw new IOException("HTTP error code: " + responseCode);
+                ;
             }
-            is.close();
+            //InputStream is = urlConnection.getInputStream();
+            //while(is.available() != 0) {
+            //    is.read();
+            //}
+            //is.close();
             urlConnection.disconnect();
         } catch(SocketTimeoutException e) {
             e.printStackTrace();
